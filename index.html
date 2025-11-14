@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MAHDI LANSARI</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Anime.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+  <!-- Three.js (particles) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#0a0a0a;--text:#fafafa;--accent:#ff6b35;--glow:#ffb703;--card:rgba(30,30,30,0.75);
+      --glass:rgba(255,255,255,0.07);--blur:12px;
+    }
+    [data-theme=light]{
+      --bg:#fafafa;--text:#0a0a0a;--card:rgba(255,255,255,0.85);--glass:rgba(0,0,0,0.05);
+    }
+    *{margin:0;padding:0;box-sizing:border-box;transition:all .4s ease}
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;
+      overflow-x:hidden;position:relative;
+    }
+
+    /* ==== TOGGLE ==== */
+    .toggle{
+      position:fixed;top:30px;right:30px;z-index:9999;
+      width:60px;height:60px;background:var(--glass);backdrop-filter:blur(var(--blur));
+      border-radius:50%;display:flex;align-items:center;justify-content:center;
+      cursor:pointer;font-size:1.8rem;box-shadow:0 8px 25px rgba(0,0,0,.3);
+    }
+    .toggle:hover{transform:scale(1.1)}
+
+    /* ==== HERO ==== */
+    header{
+      height:100vh;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(rgba(10,10,10,.75),rgba(10,10,10,.95)),url('mahdi.jpg') center/cover no-repeat;
+      position:relative;overflow:hidden;
+    }
+    [data-theme=light] header{
+      background:linear-gradient(rgba(250,250,250,.6),rgba(250,250,250,.9)),url('mahdi.jpg') center/cover no-repeat;
+    }
+    .hero-content{
+      text-align:center;z-index:2;max-width:90%;
+    }
+    h1{
+      font-size:6rem;font-weight:700;letter-spacing:-4px;
+      background:linear-gradient(90deg,var(--text),var(--accent),var(--glow));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    }
+    .tagline{font-size:1.8rem;margin:30px 0;opacity:.95;font-weight:500}
+    .stats{
+      display:flex;justify-content:center;gap:80px;margin:50px 0;flex-wrap:wrap;
+    }
+    .stat a{text-decoration:none;color:inherit}
+    .stat strong{
+      font-size:2.8rem;display:block;color:var(--accent);font-weight:700;
+    }
+    .stat span{font-size:1rem;opacity:.8;letter-spacing:2px;text-transform:uppercase}
+    .cta-btn{
+      background:var(--accent);color:#000;padding:22px 70px;font-weight:700;
+      font-size:1.4rem;border:none;border-radius:50px;cursor:pointer;
+      box-shadow:0 20px 40px rgba(255,107,53,.4);margin-top:30px;
+    }
+    .cta-btn:hover{transform:translateY(-8px);background:var(--glow)}
+
+    /* ==== SECTIONS ==== */
+    section{padding:140px 5%;position:relative;overflow:hidden}
+    .particles{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0}
+    .content{position:relative;z-index:1}
+    h2{
+      font-size:3.6rem;text-align:center;margin-bottom:90px;color:var(--accent);
+      position:relative;
+    }
+    h2::after{
+      content:'';position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);
+      width:80px;height:4px;background:var(--glow);border-radius:2px;
+    }
+
+    /* ==== SERVICES ==== */
+    .services{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:40px;
+    }
+    .card{
+      background:var(--glass);backdrop-filter:blur(var(--blur));
+      padding:55px 35px;border-radius:32px;text-align:center;
+      border:1px solid rgba(255,107,53,.3);
+    }
+    .card:hover{
+      transform:translateY(-20px);border-color:var(--accent);
+      box-shadow:0 25px 50px rgba(255,107,53,.2);
+    }
+    .card h3{font-size:1.9rem;margin:25px 0;color:var(--accent)}
+    .wedding-link{
+      display:block;margin-top:20px;color:var(--accent);font-weight:700;
+      text-decoration:none;transition:.3s;
+    }
+    .wedding-link:hover{color:var(--glow)}
+
+    /* ==== CLIENTS ==== */
+    .client-logos{
+      display:flex;flex-wrap:wrap;justify-content:center;gap:70px;padding:0 20px;
+    }
+    .client-logos a{
+      display:block;transition:transform .3s ease;opacity:.9;
+    }
+    .client-logos a:hover{transform:scale(1.12)}
+    .client-logos img{
+      height:210px;width:auto;object-fit:contain;filter:none;
+    }
+    @media(max-width:768px){
+      .client-logos{gap:45px}
+      .client-logos img{height:75px}
+    }
+
+    /* ==== CONTACT ==== */
+    #contact form{
+      max-width:720px;margin:70px auto 0;display:grid;gap:25px;
+    }
+    input,textarea{
+      background:var(--glass);backdrop-filter:blur(var(--blur));
+      border:1px solid rgba(255,107,53,.3);padding:24px;border-radius:18px;color:var(--text);
+    }
+    input:focus,textarea:focus{
+      outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,107,53,.2);
+    }
+
+    /* ==== FOOTER ==== */
+    footer{
+      padding:120px 5% 80px;text-align:center;
+      border-top:1px solid rgba(255,107,53,.2);
+    }
+    .socials{
+      display:flex;justify-content:center;gap:45px;margin-bottom:30px;
+    }
+    .socials a{
+      color:var(--text);font-size:2.9rem;transition:.4s;
+    }
+    .socials a:hover{color:var(--accent);transform:translateY(-12px)}
+    .email{
+      font-size:2rem;font-weight:700;color:var(--accent);margin-bottom:20px;
+    }
+    .wedding-company{
+      display:block;font-size:1.35rem;color:var(--glow);margin:25px auto;
+      text-decoration:none;font-weight:600;
+    }
+    .wedding-company:hover{color:var(--accent)}
+
+    /* ==== RESPONSIVE ==== */
+    @media(max-width:768px){
+      h1{font-size:4.2rem}
+      .cta-btn{padding:18px 55px;font-size:1.2rem}
+      .toggle{width:50px;height:50px;font-size:1.5rem}
+      .socials a{font-size:2.4rem}
+      .email{font-size:1.6rem}
+    }
+  </style>
+</head>
+<body data-theme="dark">
+
+  <!-- Theme toggle -->
+  <div class="toggle" onclick="toggleTheme()">
+    <i class="fas fa-moon" id="icon"></i>
+  </div>
+
+  <!-- ==== HERO ==== -->
+  <header>
+    <div class="hero-content">
+      <h1 class="hero-title">MAHDI LANSARI</h1>
+      <p class="tagline">Tunisian Creator – Editor – Wedding Photographer</p>
+
+      <div class="stats">
+        <div class="stat">
+          <a href="https://tiktok.com/@lansari.mahdi.officiel" target="_blank">
+            <strong id="tiktok-count">…</strong><span>TikTok</span>
+          </a>
+        </div>
+        <div class="stat">
+          <a href="https://instagram.com/mahdi.lansari" target="_blank">
+            <strong id="insta-count">…</strong><span>Instagram</span>
+          </a>
+        </div>
+      </div>
+
+      <button class="cta-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+        WORK WITH ME
+      </button>
+    </div>
+  </header>
+
+  <!-- ==== SERVICES ==== -->
+  <section id="services">
+    <div class="particles" id="particles1"></div>
+    <div class="content">
+      <h2>SERVICES</h2>
+      <div class="services">
+        <div class="card">
+          <h3>VIDEO EDITING</h3>
+          <p>Reels & TikToks that go viral overnight.</p>
+        </div>
+        <div class="card">
+          <h3>BRAND ADS</h3>
+          <p>Monta, Lodeep, Ri9ek.tn, Rebulot.tn, Arcade.tn & more.</p>
+        </div>
+        <div class="card">
+          <h3>WEDDING PHOTOGRAPHY</h3>
+          <p>Golden‑hour magic for couples.</p>
+          <a href="https://baraaprod.com/" target="_blank" class="wedding-link">baraaprod.com</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==== CLIENTS ==== -->
+  <section class="clients">
+    <div class="particles" id="particles2"></div>
+    <div class="content">
+      <h2>TRUSTED BY</h2>
+      <div class="client-logos">
+        <a href="#" target="_blank"><img src="monta.png"   alt="MONTA"   loading="lazy"></a>
+        <a href="#" target="_blank"><img src="yalla.png"   alt="YALLA DIGITAL" loading="lazy"></a>
+        <a href="#" target="_blank"><img src="ri9ek.png"   alt="RI9EK.TN" loading="lazy"></a>
+        <a href="#" target="_blank"><img src="arcade.png"  alt="ARCADE.TN" loading="lazy"></a>
+        <a href="#" target="_blank"><img src="flashbac.png"alt="FLASHBAC" loading="lazy"></a>
+        <a href="#" target="_blank"><img src="lyceena.png" alt="LYCEENA"  loading="lazy"></a>
+        <a href="#" target="_blank"><img src="faza.png"    alt="FAZA"     loading="lazy"></a>
+        <a href="#" target="_blank"><img src="shopy.png"   alt="SHOPY"    loading="lazy"></a>
+        <a href="#" target="_blank"><img src="rp.png"      alt="RP"       loading="lazy"></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==== CONTACT ==== -->
+  <section id="contact">
+    <div class="particles" id="particles3"></div>
+    <div class="content">
+      <h2>Contact me</h2>
+      <form action="https://formspree.io/f/mrbreykwT" method="POST">
+        <input type="text" name="name" placeholder="Name" required />
+        <input type="email" name="email" placeholder="Email" required />
+        <textarea name="message" rows="5" placeholder="Your project..." required></textarea>
+        <button type="submit" class="cta-btn">SEND</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ==== FOOTER ==== -->
+  <footer>
+    <div class="particles" id="particles4"></div>
+    <div class="content">
+      <div class="socials">
+        <a href="https://instagram.com/mahdi.lansari" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://tiktok.com/@lansari.mahdi.officiel" target="_blank"><i class="fab fa-tiktok"></i></a>
+      </div>
+      <a href="mailto:mrmehdi232@gmail.com" class="email">mrmehdi232@gmail.com</a>
+      <a href="https://baraaprod.com/" target="_blank" class="wedding-company"></a>
+      <p>2025 Mahdi Lansari – Tunisia</p>
+    </div>
+  </footer>
+
+  <!-- ====================== SCRIPTS ====================== -->
+  <script>
+    /* ---------- THEME TOGGLE ---------- */
+    function toggleTheme() {
+      const body = document.body;
+      const icon = document.getElementById('icon');
+      if (body.dataset.theme === 'dark') {
+        body.dataset.theme = 'light';
+        icon.classList.replace('fa-moon','fa-sun');
+        localStorage.setItem('theme','light');
+      } else {
+        body.dataset.theme = 'dark';
+        icon.classList.replace('fa-sun','fa-moon');
+        localStorage.setItem('theme','dark');
+      }
+    }
+    if (localStorage.getItem('theme')==='light'){
+      document.body.dataset.theme='light';
+      document.getElementById('icon').classList.replace('fa-moon','fa-sun');
+    }
+
+    /* ---------- FOLLOWER COUNTS (NEW API) ---------- */
+    async function fetchFollowers(){
+      // ---- TikTok ----
+      try{
+        const tRes = await fetch('https://www.tiktok.com/@lansari.mahdi.officiel');
+        const tHtml = await tRes.text();
+        const tMatch = tHtml.match(/"followerCount":(\d+)/);
+        const tCount = tMatch ? (parseInt(tMatch[1])/1000).toFixed(1)+'K' : '75.1K';
+        document.getElementById('tiktok-count').textContent = tCount;
+      }catch(e){ document.getElementById('tiktok-count').textContent='75.1K'; }
+
+      // ---- Instagram ----
+      try{
+        const iRes = await fetch('https://www.instagram.com/mahdi.lansari/');
+        const iHtml = await iRes.text();
+        const iMatch = iHtml.match(/"edge_followed_by":{"count":(\d+)/);
+        const iCount = iMatch ? (parseInt(iMatch[1])/1000).toFixed(1)+'K' : '11.9K';
+        document.getElementById('insta-count').textContent = iCount;
+      }catch(e){ document.getElementById('insta-count').textContent='11.9K'; }
+    }
+    fetchFollowers();
+    setInterval(fetchFollowers, 5*60*1000); // every 5 min
+
+    /* ---------- THREE.JS PARTICLES (same as before) ---------- */
+    function createParticles(id){
+      const container = document.getElementById(id);
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, container.clientWidth/container.clientHeight,0.1,1000);
+      const renderer = new THREE.WebGLRenderer({alpha:true,antialias:true});
+      renderer.setSize(container.clientWidth,container.clientHeight);
+      renderer.setPixelRatio(window.devicePixelRatio);
+      container.appendChild(renderer.domElement);
+
+      const geometry = new THREE.BufferGeometry();
+      const count = 1500;
+      const pos = new Float32Array(count*3);
+      for(let i=0;i<count*3;i++) pos[i]=(Math.random()-0.5)*10;
+      geometry.setAttribute('position',new THREE.BufferAttribute(pos,3));
+
+      const material = new THREE.PointsMaterial({
+        size:0.015,color:0xff6b35,blending:THREE.AdditiveBlending,
+        transparent:true,depthWrite:false
+      });
+      const particles = new THREE.Points(geometry,material);
+      scene.add(particles);
+      camera.position.z=3;
+
+      let mouseX=0,mouseY=0;
+      document.addEventListener('mousemove',e=>{
+        mouseX=(e.clientX/window.innerWidth)*2-1;
+        mouseY=-(e.clientY/window.innerHeight)*2+1;
+      });
+
+      function animate(){
+        requestAnimationFrame(animate);
+        particles.rotation.y+=0.0005;
+        particles.rotation.x+=0.0003;
+        particles.position.x=mouseX*0.5;
+        particles.position.y=mouseY*0.5;
+        renderer.render(scene,camera);
+      }
+      animate();
+
+      window.addEventListener('resize',()=>{
+        camera.aspect=container.clientWidth/container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth,container.clientHeight);
+      });
+    }
+    ['particles1','particles2','particles3','particles4'].forEach(createParticles);
+
+    /* ---------- ANIME.JS ANIMATIONS ---------- */
+    // Hero title
+    anime({
+      targets: '.hero-title',
+      translateY: [80,0],
+      opacity: [0,1],
+      easing: 'easeOutExpo',
+      duration: 1400,
+      delay: 300
+    });
+    // Tagline
+    anime({
+      targets: '.tagline',
+      translateY: [50,0],
+      opacity: [0,1],
+      easing: 'easeOutExpo',
+      duration: 1200,
+      delay: 600
+    });
+    // Stats
+    anime({
+      targets: '.stat',
+      translateY: [60,0],
+      opacity: [0,1],
+      easing: 'easeOutExpo',
+      duration: 1000,
+      delay: anime.stagger(200, {start:800})
+    });
+    // CTA button
+    anime({
+      targets: '.cta-btn',
+      scale: [0.9,1],
+      opacity: [0,1],
+      easing: 'easeOutExpo',
+      duration: 800,
+      delay: 1300
+    });
+
+    // Section titles
+    const sectionObserver = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          anime({
+            targets: entry.target.querySelector('h2'),
+            translateY: [40,0],
+            opacity: [0,1],
+            easing: 'easeOutExpo',
+            duration: 900
+          });
+          sectionObserver.unobserve(entry.target);
+        }
+      });
+    },{threshold:0.3});
+    document.querySelectorAll('section').forEach(sec=>sectionObserver.observe(sec));
+
+    const cardObserver = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          anime({
+            targets: entry.target.querySelectorAll('.card, .client-logos a'),
+            translateY: [50,0],
+            opacity: [0,1],
+            easing: 'easeOutExpo',
+            duration: 800,
+            delay: anime.stagger(120)
+          });
+          cardObserver.unobserve(entry.target);
+        }
+      });
+    },{threshold:0.2});
+    document.querySelectorAll('#services, .clients').forEach(sec=>cardObserver.observe(sec));
+
+  </script>
+</body>
+</html>
